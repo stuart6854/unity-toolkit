@@ -60,6 +60,10 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 .Where(installed.Contains)
                 .ToArray();
 
+            var notInstalled = _remove.Where(name => !installed.Contains(name)).ToArray();
+            if (notInstalled.Length > 0)
+                Debug.Log($"[Toolkit] Not in manifest, skipping removal of: {string.Join(", ", notInstalled)}");
+
             if (toAdd.Length == 0 && toRemove.Length == 0)
             {
                 Debug.Log("[Toolkit] Packages already up to date.");

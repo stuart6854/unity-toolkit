@@ -23,6 +23,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         void OnEnable()
         {
             var settings = ProjectSetupSettings.instance;
+            settings.Migrate();
             settings.hideFlags &= ~HideFlags.NotEditable;
             _so = new SerializedObject(settings);
         }

@@ -3,6 +3,13 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-10-29
+
+### Added
+- Default remove list now covers Unity 6.6 template modules: 2D (physics2d, physicscore2d, tilemap, vectorgraphics), platform/services (adaptiveperformance, androidjni, unityanalytics, xr), media/content (video, screencapture, assetbundle, unitywebrequest*) and terrain (terrain, terrainphysics, tetgen).
+- Settings saved by older versions get the new defaults added automatically. Your own entries are kept.
+- Console now lists packages skipped because they aren't in the manifest.
+
 ## [0.3.1] - 2026-10-29
 
 ### Fixed

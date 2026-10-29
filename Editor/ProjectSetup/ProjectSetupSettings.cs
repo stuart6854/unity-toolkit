@@ -80,6 +80,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
 
         static readonly string[] DefaultPackagesToRemove =
         {
+            // Older Unity 6 template packages
             "com.unity.collab-proxy",
             "com.unity.visualscripting",
             "com.unity.multiplayer.center",
@@ -88,7 +89,51 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             "com.unity.modules.vr",
             "com.unity.modules.wind",
             "com.unity.modules.umbra",
+            // 2D
+            "com.unity.modules.physics2d",
+            "com.unity.modules.physicscore2d",
+            "com.unity.modules.tilemap",
+            "com.unity.modules.vectorgraphics",
+            // Platform / services
+            "com.unity.modules.adaptiveperformance",
+            "com.unity.modules.androidjni",
+            "com.unity.modules.unityanalytics",
+            "com.unity.modules.xr",
+            // Media / content
+            "com.unity.modules.video",
+            "com.unity.modules.screencapture",
+            "com.unity.modules.assetbundle",
+            "com.unity.modules.unitywebrequestassetbundle",
+            "com.unity.modules.unitywebrequestaudio",
+            "com.unity.modules.unitywebrequesttexture",
+            "com.unity.modules.unitywebrequestwww",
+            // Terrain
+            "com.unity.modules.terrain",
+            "com.unity.modules.terrainphysics",
+            "com.unity.modules.tetgen",
         };
+
+        const int CurrentSettingsVersion = 2;
+
+        [SerializeField, HideInInspector] int settingsVersion;
+
+        /// <summary>
+        /// Adds new default entries to settings saved by an older toolkit version.
+        /// Keeps the user's own entries.
+        /// </summary>
+        public void Migrate()
+        {
+            if (settingsVersion >= CurrentSettingsVersion)
+                return;
+
+            packagesToRemove ??= new List<string>();
+            foreach (var id in DefaultPackagesToRemove)
+                if (!packagesToRemove.Contains(id))
+                    packagesToRemove.Add(id);
+
+            settingsVersion = CurrentSettingsVersion;
+            SaveSettings();
+        }
 
         void OnEnable()
         {
@@ -140,6 +185,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             scenes = DefaultScenes();
             organiserNames = new List<string>(DefaultOrganisers);
             deleteSampleScene = true;
+            settingsVersion = CurrentSettingsVersion;
         }
 
         public void SaveSettings() => Save(true);
