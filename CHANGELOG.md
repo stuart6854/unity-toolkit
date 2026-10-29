@@ -3,6 +3,11 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.6.4] - 2026-10-29
+
+### Changed
+- New Hierarchy window: header bars are drawn behind the row so the expand/collapse arrow stays visible. The name, icon and other columns are hidden on header rows.
+
 ## [0.6.3] - 2026-10-29
 
 ### Changed

@@ -1,6 +1,6 @@
 {
   "name": "com.stumillman.toolkit",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "displayName": "Toolkit",
   "description": "Personal toolkit for Unity 6+. Includes a Project Setup window that creates a standard folder layout, default URP materials, starter scenes and installs common packages and removes unneeded ones.",
   "unity": "6000.0",

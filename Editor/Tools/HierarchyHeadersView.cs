@@ -1,4 +1,5 @@
 #if UNITY_6000_6_OR_NEWER
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Hierarchy;
 using Unity.Hierarchy.Editor;
@@ -28,14 +29,14 @@ namespace StuMillman.Toolkit.Editor.Tools
                 item.schedule.Execute(() => Apply(item)); // Row not attached yet; try again next frame.
         }
 
+        // Elements we hid on each recycled row, so they can be shown again on rebind.
+        static readonly Dictionary<VisualElement, List<VisualElement>> Hidden = new();
+
         /// <summary>Clears and (re)adds the bar. Returns false if the row element couldn't be found yet.</summary>
         static bool Apply(HierarchyViewItem item)
         {
             var row = FindRow(item);
-
-            // Rows are recycled, so always clear our element first.
-            item.Q(BarName)?.RemoveFromHierarchy();
-            row?.Q(BarName)?.RemoveFromHierarchy();
+            Clear(item, row);
 
             if (!HierarchyHeaders.Enabled || item.Handler is not HierarchyGameObjectHandler handler)
                 return true;
@@ -47,7 +48,7 @@ namespace StuMillman.Toolkit.Editor.Tools
             var bar = new Label(title.ToUpperInvariant())
             {
                 name = BarName,
-                pickingMode = PickingMode.Ignore, // Clicks still select/expand the row underneath.
+                pickingMode = PickingMode.Ignore, // Clicks still select/expand the row.
             };
             bar.style.position = Position.Absolute;
             bar.style.left = 0;
@@ -60,8 +61,32 @@ namespace StuMillman.Toolkit.Editor.Tools
             bar.style.unityFontStyleAndWeight = FontStyle.Bold;
             bar.style.opacity = go.activeInHierarchy ? 1f : 0.5f;
 
-            (row ?? item).Add(bar);
+            // Behind the row's contents, so the expand/collapse arrow stays on top.
+            (row ?? item).Insert(0, bar);
+
+            // Hide everything else on the row: the name, the icon and the other columns.
+            var hidden = new List<VisualElement>();
+            if (row != null)
+                hidden.AddRange(row.Children().Where(cell => cell != bar && !cell.Contains(item)));
+            if (item.Icon != null)
+                hidden.Add(item.Icon);
+            hidden.AddRange(item.Query<Label>().Where(l => l.text == go.name).ToList());
+
+            foreach (var e in hidden)
+                e.style.visibility = Visibility.Hidden;
+            Hidden[item] = hidden;
+
             return row != null;
+        }
+
+        static void Clear(HierarchyViewItem item, VisualElement row)
+        {
+            item.Q(BarName)?.RemoveFromHierarchy();
+            row?.Q(BarName)?.RemoveFromHierarchy();
+
+            if (Hidden.Remove(item, out var hidden))
+                foreach (var e in hidden)
+                    e.style.visibility = StyleKeyword.Null;
         }
 
         /// <summary>The list row that holds all the column cells for this item.</summary>
