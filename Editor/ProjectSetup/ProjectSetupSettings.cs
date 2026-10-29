@@ -13,6 +13,18 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
     public class ProjectSetupSettings : ScriptableSingleton<ProjectSetupSettings>
     {
         [Serializable]
+        public class SceneEntry
+        {
+            public string name;
+            public bool cameraAndLight = true;
+            public bool organisers = true;
+            public bool globalVolume = true;
+            public bool testGeometry = true;
+
+            public SceneEntry(string name) => this.name = name;
+        }
+
+        [Serializable]
         public class MaterialEntry
         {
             public string name;
@@ -44,6 +56,27 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
 
         [Tooltip("Packages and built-in modules to remove, e.g. com.unity.collab-proxy or com.unity.modules.cloth.")]
         public List<string> packagesToRemove = new(DefaultPackagesToRemove);
+
+        [Tooltip("Folder (relative to the root folder) where scenes are created.")]
+        public string scenesFolder = "Scenes";
+
+        [Tooltip("Scenes to create. The first one is opened and placed first in Build Settings.")]
+        public List<SceneEntry> scenes = DefaultScenes();
+
+        [Tooltip("Empty header objects added to each scene, shown as '--- Name ---'.")]
+        public List<string> organiserNames = new(DefaultOrganisers);
+
+        [Tooltip("Delete Assets/Scenes/SampleScene.unity and remove it from Build Settings.")]
+        public bool deleteSampleScene = true;
+
+        static List<SceneEntry> DefaultScenes() => new()
+        {
+            new SceneEntry("Bootstrap"),
+            new SceneEntry("MainMenu"),
+            new SceneEntry("Game"),
+        };
+
+        static readonly string[] DefaultOrganisers = { "Managers", "Environment", "UI", "Dynamic" };
 
         static readonly string[] DefaultPackagesToRemove =
         {
@@ -103,6 +136,10 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 "com.unity.ai.navigation",
             };
             packagesToRemove = new List<string>(DefaultPackagesToRemove);
+            scenesFolder = "Scenes";
+            scenes = DefaultScenes();
+            organiserNames = new List<string>(DefaultOrganisers);
+            deleteSampleScene = true;
         }
 
         public void SaveSettings() => Save(true);

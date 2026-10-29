@@ -3,6 +3,13 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-10-29
+
+### Added
+- Scene setup: creates Bootstrap, MainMenu and Game scenes in `Assets/_Project/Scenes` and adds them to Build Settings (Bootstrap first).
+- Each scene can include a camera and light, organiser objects (`--- Managers ---`, `--- Environment ---`, `--- UI ---`, `--- Dynamic ---`), a URP Global Volume (shared profile with ACES tonemapping and light bloom) and test geometry (ground plane and cubes using the default materials). Each item can be toggled per scene.
+- Opens the first scene and optionally deletes the template's `SampleScene`.
+
 ## [0.2.0] - 2026-10-29
 
 ### Added

@@ -2,7 +2,9 @@
     "name": "StuMillman.Toolkit.Editor",
     "rootNamespace": "StuMillman.Toolkit.Editor",
     "references": [
-        "StuMillman.Toolkit"
+        "StuMillman.Toolkit",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.Universal.Runtime"
     ],
     "includePlatforms": [
         "Editor"
@@ -13,6 +15,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.render-pipelines.universal",
+            "expression": "1.0.0",
+            "define": "TOOLKIT_URP"
+        }
+    ],
     "noEngineReferences": false
 }

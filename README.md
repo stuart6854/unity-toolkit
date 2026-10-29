@@ -7,16 +7,16 @@ Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for
 In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
 
 ```
-https://github.com/stuart6854/unity-toolkit.git#v0.2.0
+https://github.com/stuart6854/unity-toolkit.git#v0.3.0
 ```
 
 You can also add it to `Packages/manifest.json`:
 
 ```json
-"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.2.0"
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.3.0"
 ```
 
-To get the latest commit on `main`, leave off `#v0.2.0`. Pinning a tag is recommended.
+To get the latest commit on `main`, leave off `#v0.3.0`. Pinning a tag is recommended.
 
 ## Project Setup
 
@@ -26,6 +26,7 @@ Open it from **Tools > Toolkit > Project Setup**. Tick the sections you want, th
 |---|---|
 | Folders | Creates `Assets/_Project/{Art/{Materials,Models,Textures,Animations},Audio,Prefabs,Scenes,Scripts/{Runtime,Editor},ScriptableObjects,Settings,UI}`. Can add `.gitkeep` files. |
 | Default Materials | Creates simple coloured URP Lit materials in `Assets/_Project/Art/Materials/Defaults`. Existing materials are never overwritten. |
+| Scenes | Creates `Bootstrap`, `MainMenu` and `Game` scenes in `Assets/_Project/Scenes` and adds them to Build Settings. Each can include a camera and light, organiser objects, a URP Global Volume and a ground plane with cubes. Opens `Bootstrap` and deletes the template's `SampleScene`. Existing scenes are never overwritten. |
 | Packages | Installs `com.unity.inputsystem`, `com.unity.cinemachine` and `com.unity.ai.navigation`. Removes `com.unity.collab-proxy`, `com.unity.visualscripting`, `com.unity.multiplayer.center` and the built-in modules `cloth`, `vehicles`, `vr`, `wind` and `umbra`. Packages already in the right state are skipped. |
 
 Every list can be edited in the window. Settings are saved per project to `ProjectSettings/StuMillmanToolkit/ProjectSetupSettings.asset`.

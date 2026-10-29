@@ -10,6 +10,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
 
         bool _doFolders = true;
         bool _doMaterials = true;
+        bool _doScenes = true;
         bool _doPackages = true;
 
         [MenuItem("Tools/Toolkit/Project Setup", priority = 0)]
@@ -50,6 +51,16 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                     MaterialSetup.CreateMaterials(settings);
             });
 
+            Section("Scenes", ref _doScenes, () =>
+            {
+                Prop("scenesFolder");
+                Prop("scenes");
+                Prop("organiserNames");
+                Prop("deleteSampleScene");
+                if (GUILayout.Button("Create Scenes"))
+                    SceneSetup.CreateScenes(settings);
+            });
+
             Section("Packages", ref _doPackages, () =>
             {
                 Prop("packages");
@@ -88,6 +99,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         {
             if (_doFolders) FolderSetup.CreateFolders(settings);
             if (_doMaterials) MaterialSetup.CreateMaterials(settings);
+            if (_doScenes) SceneSetup.CreateScenes(settings);
             // Packages last: installing triggers a domain reload.
             if (_doPackages) PackageInstaller.Apply(settings.packages, settings.packagesToRemove);
         }
