@@ -3,6 +3,18 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-10-29
+
+### Added
+- **Project Settings** section: company/product name and bundle ID, Linear color space, fast Enter Play Mode (no domain/scene reload), Input System as the only input handler (prompts for an editor restart).
+- **Git Files** section: writes a Unity `.gitignore` and `.gitattributes` (Smart Merge rules, binary rules, Git LFS rules commented out) to the project root.
+- **Assembly Definitions** section: creates `<Product>.Runtime` and `<Product>.Editor` asmdefs in `_Project/Scripts` with common package references.
+- **Bootstrap Play Mode** (Tools > Toolkit > Bootstrap Play Mode): Play always starts in the first Build Settings scene, then loads the scene(s) you were editing. Runtime code can check `StuMillman.Toolkit.BootstrapPlayMode.WillLoadEditedScene`.
+- **Screenshot tool** (Tools > Toolkit > Screenshot): F12 captures the Game view to `<Project>/Screenshots`, with x2/x4 options.
+
+### Changed
+- `com.unity.modules.screencapture` is no longer removed by default (the screenshot tool needs it). It's taken off saved remove lists automatically.
+
 ## [0.4.0] - 2026-10-29
 
 ### Added

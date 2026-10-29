@@ -45,6 +45,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             if (list.Status != StatusCode.Success)
             {
                 Debug.LogError($"[Toolkit] Could not list packages: {list.Error?.message}");
+                ProjectSettingsSetup.PromptRestartIfPending();
                 return;
             }
 
@@ -67,6 +68,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             if (toAdd.Length == 0 && toRemove.Length == 0)
             {
                 Debug.Log("[Toolkit] Packages already up to date.");
+                ProjectSettingsSetup.PromptRestartIfPending();
                 return;
             }
 
@@ -90,6 +92,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 Debug.LogError($"[Toolkit] Package changes failed: {_changeRequest.Error?.message}");
 
             _changeRequest = null;
+            ProjectSettingsSetup.PromptRestartIfPending();
         }
 
         static IEnumerable<string> Clean(IEnumerable<string> ids) =>

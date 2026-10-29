@@ -9,6 +9,9 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         Vector2 _scroll;
 
         bool _doFolders = true;
+        bool _doGitFiles = true;
+        bool _doProjectSettings = true;
+        bool _doAssemblies = true;
         bool _doMaterials = true;
         bool _doScenes = true;
         bool _doPackages = true;
@@ -44,6 +47,13 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                     FolderSetup.CreateFolders(settings);
             });
 
+            Section("Git Files (.gitignore / .gitattributes)", ref _doGitFiles, () =>
+            {
+                Prop("overwriteGitFiles");
+                if (GUILayout.Button("Create Git Files"))
+                    GitFilesSetup.Create(settings);
+            });
+
             Section("Default Materials (URP)", ref _doMaterials, () =>
             {
                 Prop("materialsFolder");
@@ -60,6 +70,31 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 Prop("deleteSampleScene");
                 if (GUILayout.Button("Create Scenes"))
                     SceneSetup.CreateScenes(settings);
+            });
+
+            Section("Project Settings", ref _doProjectSettings, () =>
+            {
+                Prop("companyName");
+                Prop("productName");
+                Prop("setCompanyAndProduct");
+                Prop("setLinearColorSpace");
+                Prop("setFastEnterPlayMode");
+                Prop("setInputSystemOnly");
+                if (GUILayout.Button("Apply Project Settings"))
+                {
+                    ProjectSettingsSetup.Apply(settings);
+                    ProjectSettingsSetup.PromptRestartIfPending();
+                }
+            });
+
+            Section("Assembly Definitions", ref _doAssemblies, () =>
+            {
+                Prop("scriptsFolder");
+                Prop("asmdefReferences");
+                var root = AssemblySetup.RootName(settings);
+                EditorGUILayout.HelpBox($"Creates {root}.Runtime and {root}.Editor (namespace {root}).", MessageType.None);
+                if (GUILayout.Button("Create Assembly Definitions"))
+                    AssemblySetup.Create(settings);
             });
 
             Section("Packages", ref _doPackages, () =>
@@ -99,10 +134,15 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         void RunSelected(ProjectSetupSettings settings)
         {
             if (_doFolders) FolderSetup.CreateFolders(settings);
+            if (_doGitFiles) GitFilesSetup.Create(settings);
             if (_doMaterials) MaterialSetup.CreateMaterials(settings);
             if (_doScenes) SceneSetup.CreateScenes(settings);
+            if (_doProjectSettings) ProjectSettingsSetup.Apply(settings);
+            if (_doAssemblies) AssemblySetup.Create(settings);
             // Packages last: installing triggers a domain reload.
             if (_doPackages) PackageInstaller.Apply(settings.packages, settings.packagesToRemove);
+            // Restart prompt waits until packages finish (or shows now if nothing is running).
+            ProjectSettingsSetup.PromptRestartIfPending();
         }
 
         void Section(string title, ref bool enabled, System.Action body)

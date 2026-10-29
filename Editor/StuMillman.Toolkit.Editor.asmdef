@@ -20,6 +20,11 @@
             "name": "com.unity.render-pipelines.universal",
             "expression": "1.0.0",
             "define": "TOOLKIT_URP"
+        },
+        {
+            "name": "com.unity.modules.screencapture",
+            "expression": "1.0.0",
+            "define": "TOOLKIT_SCREENCAPTURE"
         }
     ],
     "noEngineReferences": false

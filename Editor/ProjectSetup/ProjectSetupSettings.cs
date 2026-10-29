@@ -69,6 +69,41 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         [Tooltip("Delete Assets/Scenes/SampleScene.unity and remove it from Build Settings.")]
         public bool deleteSampleScene = true;
 
+        [Tooltip("Company name. Leave empty to keep the current Player Settings value.")]
+        public string companyName;
+
+        [Tooltip("Product name. Also used for the bundle ID, assembly names and root namespace.")]
+        public string productName;
+
+        public bool setCompanyAndProduct = true;
+        public bool setLinearColorSpace = true;
+
+        [Tooltip("Disables domain and scene reload on Play. Static fields are not reset between plays.")]
+        public bool setFastEnterPlayMode = true;
+
+        [Tooltip("Sets Active Input Handling to the Input System package only. Needs an editor restart.")]
+        public bool setInputSystemOnly = true;
+
+        [Tooltip("Overwrite existing .gitignore / .gitattributes in the project root.")]
+        public bool overwriteGitFiles;
+
+        [Tooltip("Scripts folder (relative to the root folder). Runtime and Editor asmdefs go in its Runtime/ and Editor/ subfolders.")]
+        public string scriptsFolder = "Scripts";
+
+        [Tooltip("Assemblies referenced by the project's asmdefs. Missing ones are ignored by Unity.")]
+        public List<string> asmdefReferences = new(DefaultAsmdefReferences);
+
+        static readonly string[] DefaultAsmdefReferences =
+        {
+            "Unity.InputSystem",
+            "Unity.Cinemachine",
+            "Unity.AI.Navigation",
+            "Unity.RenderPipelines.Core.Runtime",
+            "Unity.RenderPipelines.Universal.Runtime",
+            "UnityEngine.UI",
+            "Unity.TextMeshPro",
+        };
+
         static List<SceneEntry> DefaultScenes() => new()
         {
             new SceneEntry("Bootstrap"),
@@ -101,7 +136,6 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             "com.unity.modules.xr",
             // Media / content
             "com.unity.modules.video",
-            "com.unity.modules.screencapture",
             "com.unity.modules.assetbundle",
             "com.unity.modules.unitywebrequestassetbundle",
             "com.unity.modules.unitywebrequestaudio",
@@ -113,7 +147,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             "com.unity.modules.tetgen",
         };
 
-        const int CurrentSettingsVersion = 2;
+        const int CurrentSettingsVersion = 3;
 
         [SerializeField, HideInInspector] int settingsVersion;
 
@@ -127,9 +161,21 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 return;
 
             packagesToRemove ??= new List<string>();
-            foreach (var id in DefaultPackagesToRemove)
-                if (!packagesToRemove.Contains(id))
-                    packagesToRemove.Add(id);
+
+            if (settingsVersion < 2)
+            {
+                foreach (var id in DefaultPackagesToRemove)
+                    if (!packagesToRemove.Contains(id))
+                        packagesToRemove.Add(id);
+            }
+
+            if (settingsVersion < 3)
+            {
+                // The screenshot tool needs this module.
+                packagesToRemove.Remove("com.unity.modules.screencapture");
+                if (string.IsNullOrEmpty(companyName)) companyName = PlayerSettings.companyName;
+                if (string.IsNullOrEmpty(productName)) productName = PlayerSettings.productName;
+            }
 
             settingsVersion = CurrentSettingsVersion;
             SaveSettings();
@@ -185,6 +231,15 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             scenes = DefaultScenes();
             organiserNames = new List<string>(DefaultOrganisers);
             deleteSampleScene = true;
+            companyName = PlayerSettings.companyName;
+            productName = PlayerSettings.productName;
+            setCompanyAndProduct = true;
+            setLinearColorSpace = true;
+            setFastEnterPlayMode = true;
+            setInputSystemOnly = true;
+            overwriteGitFiles = false;
+            scriptsFolder = "Scripts";
+            asmdefReferences = new List<string>(DefaultAsmdefReferences);
             settingsVersion = CurrentSettingsVersion;
         }
 
