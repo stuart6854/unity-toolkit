@@ -3,6 +3,11 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.6.2] - 2026-10-29
+
+### Fixed
+- Hierarchy headers didn't show in Unity 6.6's new Hierarchy window. They now hook `HierarchyWindow.BindViewItem` there. The legacy window still uses the IMGUI callback.
+
 ## [0.6.1] - 2026-10-29
 
 ### Fixed

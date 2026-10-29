@@ -4,7 +4,8 @@ using UnityEngine;
 namespace StuMillman.Toolkit.Editor.Tools
 {
     /// <summary>
-    /// Draws GameObjects named like "--- Managers ---" as coloured header bars in the Hierarchy.
+    /// Draws GameObjects named like "--- Managers ---" as coloured header bars in the legacy (IMGUI) Hierarchy.
+    /// Unity 6.6's new Hierarchy window is handled by <see cref="HierarchyHeadersView"/>.
     /// Headers are removed from builds by <see cref="HierarchyHeaderStripper"/>.
     /// </summary>
     [InitializeOnLoad]
@@ -34,6 +35,9 @@ namespace StuMillman.Toolkit.Editor.Tools
             {
                 EditorPrefs.SetBool(PrefKey, value);
                 EditorApplication.RepaintHierarchyWindow();
+#if UNITY_6000_6_OR_NEWER
+                HierarchyHeadersView.RefreshAll();
+#endif
             }
         }
 
@@ -101,7 +105,7 @@ namespace StuMillman.Toolkit.Editor.Tools
             GUI.Label(bar, title.ToUpperInvariant(), _style);
         }
 
-        static Color ColorFor(string title)
+        internal static Color ColorFor(string title)
         {
             // Stable FNV-1a hash so a name always gets the same colour.
             unchecked
