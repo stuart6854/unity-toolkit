@@ -1,0 +1,16 @@
+{
+  "name": "com.stumillman.toolkit",
+  "version": "0.1.0",
+  "displayName": "Toolkit",
+  "description": "Personal toolkit for Unity 6+. Includes a Project Setup window that creates a standard folder layout, default URP materials and installs common packages.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Stu Millman",
+    "url": "https://github.com/stuart6854"
+  },
+  "license": "MIT",
+  "keywords": ["toolkit", "project setup", "editor"],
+  "documentationUrl": "https://github.com/stuart6854/unity-toolkit#readme",
+  "changelogUrl": "https://github.com/stuart6854/unity-toolkit/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/stuart6854/unity-toolkit/blob/main/LICENSE.md"
+}

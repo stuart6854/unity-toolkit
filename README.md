@@ -1,0 +1,41 @@
+# Toolkit (`com.stumillman.toolkit`)
+
+Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for new projects.
+
+## Install
+
+In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
+
+```
+https://github.com/stuart6854/unity-toolkit.git#v0.1.0
+```
+
+You can also add it to `Packages/manifest.json`:
+
+```json
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.1.0"
+```
+
+To get the latest commit on `main`, leave off `#v0.1.0`. Pinning a tag is recommended.
+
+## Project Setup
+
+Open it from **Tools > Toolkit > Project Setup**. Tick the sections you want, then click **Run Selected**. You can also run each section with its own button.
+
+| Section | What it does |
+|---|---|
+| Folders | Creates `Assets/_Project/{Art/{Materials,Models,Textures,Animations},Audio,Prefabs,Scenes,Scripts/{Runtime,Editor},ScriptableObjects,Settings,UI}`. Can add `.gitkeep` files. |
+| Default Materials | Creates simple coloured URP Lit materials in `Assets/_Project/Art/Materials/Defaults`. Existing materials are never overwritten. |
+| Packages | Installs `com.unity.inputsystem`, `com.unity.cinemachine` and `com.unity.ai.navigation`, skipping any that are already installed. |
+
+Every list can be edited in the window. Settings are saved per project to `ProjectSettings/StuMillmanToolkit/ProjectSetupSettings.asset`.
+
+## Releasing
+
+1. Bump `version` in `package.json`.
+2. Add a `## [x.y.z]` section to `CHANGELOG.md`.
+3. Push to `main`. The **Release** workflow creates the `vx.y.z` tag and a GitHub release.
+
+## License
+
+MIT. See [LICENSE.md](LICENSE.md).
