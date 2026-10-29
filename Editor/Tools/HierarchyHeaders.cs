@@ -93,8 +93,9 @@ namespace StuMillman.Toolkit.Editor.Tools
             if (!go.activeInHierarchy)
                 color.a = 0.5f;
 
-            // Cover the icon and label area.
-            var bar = new Rect(rect.x - 2f, rect.y, rect.width + 2f, rect.height);
+            // Full row width (from just right of the visibility/pick columns).
+            const float left = 32f;
+            var bar = new Rect(left, rect.y, rect.xMax - left + 16f, rect.height);
             EditorGUI.DrawRect(bar, color);
 
             _style ??= new GUIStyle(EditorStyles.boldLabel)
@@ -105,6 +106,13 @@ namespace StuMillman.Toolkit.Editor.Tools
             GUI.Label(bar, title.ToUpperInvariant(), _style);
         }
 
+        /// <summary>Lowers saturation and brightness so bars don't overpower the Hierarchy.</summary>
+        static Color Mute(Color color)
+        {
+            Color.RGBToHSV(color, out var h, out var s, out var v);
+            return Color.HSVToRGB(h, s * 0.7f, v * 0.85f);
+        }
+
         internal static Color ColorFor(string title)
         {
             // Stable FNV-1a hash so a name always gets the same colour.
@@ -113,7 +121,7 @@ namespace StuMillman.Toolkit.Editor.Tools
                 var hash = 2166136261u;
                 foreach (var c in title.ToLowerInvariant())
                     hash = (hash ^ c) * 16777619u;
-                return Palette[hash % (uint)Palette.Length];
+                return Mute(Palette[hash % (uint)Palette.Length]);
             }
         }
     }

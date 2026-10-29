@@ -24,15 +24,25 @@ namespace StuMillman.Toolkit.Editor.Tools
 
         static void OnBindViewItem(HierarchyWindow window, HierarchyView view, HierarchyViewItem item)
         {
+            if (!Apply(item))
+                item.schedule.Execute(() => Apply(item)); // Row not attached yet; try again next frame.
+        }
+
+        /// <summary>Clears and (re)adds the bar. Returns false if the row element couldn't be found yet.</summary>
+        static bool Apply(HierarchyViewItem item)
+        {
+            var row = FindRow(item);
+
             // Rows are recycled, so always clear our element first.
             item.Q(BarName)?.RemoveFromHierarchy();
+            row?.Q(BarName)?.RemoveFromHierarchy();
 
             if (!HierarchyHeaders.Enabled || item.Handler is not HierarchyGameObjectHandler handler)
-                return;
+                return true;
 
             var go = handler.GetGameObject(item.Node);
             if (go == null || !HierarchyHeaders.IsHeader(go.name, out var title))
-                return;
+                return true;
 
             var bar = new Label(title.ToUpperInvariant())
             {
@@ -45,14 +55,25 @@ namespace StuMillman.Toolkit.Editor.Tools
             bar.style.top = 0;
             bar.style.bottom = 0;
             bar.style.backgroundColor = HierarchyHeaders.ColorFor(title);
-            bar.style.color = Color.white;
+            bar.style.color = new Color(1f, 1f, 1f, 0.9f);
             bar.style.unityTextAlign = TextAnchor.MiddleCenter;
             bar.style.unityFontStyleAndWeight = FontStyle.Bold;
             bar.style.opacity = go.activeInHierarchy ? 1f : 0.5f;
 
-            // Prefer the row's content container so the indent and foldout arrow stay visible.
-            var container = item.Q(className: "hierarchy-item__container") ?? item;
-            container.Add(bar);
+            (row ?? item).Add(bar);
+            return row != null;
+        }
+
+        /// <summary>The list row that holds all the column cells for this item.</summary>
+        static VisualElement FindRow(VisualElement item)
+        {
+            for (var e = item; e != null; e = e.parent)
+            {
+                if (e.ClassListContains("unity-multi-column-view__row-container") ||
+                    e.ClassListContains("unity-collection-view__item"))
+                    return e;
+            }
+            return null;
         }
 
         /// <summary>Re-applies headers to all visible rows (e.g. after toggling the feature).</summary>
@@ -60,7 +81,7 @@ namespace StuMillman.Toolkit.Editor.Tools
         {
             foreach (var window in Resources.FindObjectsOfTypeAll<HierarchyWindow>())
             foreach (var item in window.rootVisualElement.Query<HierarchyViewItem>().ToList())
-                OnBindViewItem(window, null, item);
+                Apply(item);
         }
     }
 }

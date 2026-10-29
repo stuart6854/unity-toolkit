@@ -3,6 +3,12 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.6.3] - 2026-10-29
+
+### Changed
+- Hierarchy header bars now span the full row (all columns in the new Hierarchy window).
+- Header colours are more muted.
+
 ## [0.6.2] - 2026-10-29
 
 ### Fixed
