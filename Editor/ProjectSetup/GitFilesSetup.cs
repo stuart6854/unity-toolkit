@@ -35,6 +35,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
 /[Mm]emoryCaptures/
 /[Rr]ecordings/
 /Screenshots/
+/[Aa]ssets/StuMillmanToolkit.Generated*
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta

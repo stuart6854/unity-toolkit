@@ -3,6 +3,12 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.7.0] - 2026-10-29
+
+### Added
+- **Build info**: each build gets the version, an auto-incrementing build number, git commit/branch (and whether there were uncommitted changes) and the build time. Read it with `StuMillman.Toolkit.BuildInfo.Current`.
+- The build number is stored in `ProjectSettings/StuMillmanToolkit/BuildNumber.txt` and also sets the Android version code and iOS/macOS build number.
+
 ## [0.6.4] - 2026-10-29
 
 ### Changed

@@ -7,16 +7,16 @@ Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for
 In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
 
 ```
-https://github.com/stuart6854/unity-toolkit.git#v0.6.4
+https://github.com/stuart6854/unity-toolkit.git#v0.7.0
 ```
 
 You can also add it to `Packages/manifest.json`:
 
 ```json
-"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.6.4"
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.7.0"
 ```
 
-To get the latest commit on `main`, leave off `#v0.6.4`. Pinning a tag is recommended.
+To get the latest commit on `main`, leave off `#v0.7.0`. Pinning a tag is recommended.
 
 ## Project Setup
 
@@ -58,6 +58,23 @@ On Unity 6.3+, a dropdown in the main toolbar lists the Build Settings scenes. I
 ### Screenshots
 
 **Tools > Toolkit > Screenshot**. Press **F12** to capture the Game view, or use the x2/x4 menu items. Files are saved to `<Project>/Screenshots` (git-ignored).
+
+## Build info
+
+Every build is stamped with the version, a build number, the git commit and branch, and the build time:
+
+```csharp
+using StuMillman.Toolkit;
+
+var info = BuildInfo.Current;
+versionLabel.text = info.ShortString;   // "v0.3.0 (42)"
+Debug.Log(info.ToString());             // "v0.3.0 (42) a1b2c3d [main] 2026-10-29 14:03 UTC"
+// Also: info.Version, info.BuildNumber, info.Commit, info.Branch, info.IsDirty, info.BuildTimeUtc
+```
+
+- The build number goes up by 1 on each build. It's saved in `ProjectSettings/StuMillmanToolkit/BuildNumber.txt` (commit this file), and is also used for the Android version code and iOS/macOS build number.
+- In the editor, `Current` returns live values (the last build number, current git state).
+- Needs `git` on the PATH for commit/branch. Without it they show as `unknown`.
 
 ## Releasing
 
