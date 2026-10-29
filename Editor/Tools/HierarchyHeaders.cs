@@ -39,7 +39,11 @@ namespace StuMillman.Toolkit.Editor.Tools
 
         static HierarchyHeaders()
         {
+#if UNITY_6000_3_OR_NEWER
+            EditorApplication.hierarchyWindowItemByEntityIdOnGUI += OnItemGUI;
+#else
             EditorApplication.hierarchyWindowItemOnGUI += OnItemGUI;
+#endif
         }
 
         [MenuItem(MenuPath, priority = 21)]
@@ -63,12 +67,19 @@ namespace StuMillman.Toolkit.Editor.Tools
             return true;
         }
 
-        static void OnItemGUI(int instanceId, Rect rect)
+#if UNITY_6000_3_OR_NEWER
+        static void OnItemGUI(EntityId id, Rect rect) =>
+            DrawItem(EditorUtility.EntityIdToObject(id) as GameObject, rect);
+#else
+        static void OnItemGUI(int instanceId, Rect rect) =>
+            DrawItem(EditorUtility.InstanceIDToObject(instanceId) as GameObject, rect);
+#endif
+
+        static void DrawItem(GameObject go, Rect rect)
         {
             if (!Enabled || Event.current.type != EventType.Repaint)
                 return;
 
-            var go = EditorUtility.InstanceIDToObject(instanceId) as GameObject;
             if (go == null || !IsHeader(go.name, out var title))
                 return;
 

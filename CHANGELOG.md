@@ -3,6 +3,11 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.6.1] - 2026-10-29
+
+### Fixed
+- Compile errors on newer Unity 6 versions: hierarchy headers now use `hierarchyWindowItemByEntityIdOnGUI` and `EntityIdToObject` on Unity 6.3+.
+
 ## [0.6.0] - 2026-10-29
 
 ### Added
