@@ -7,16 +7,16 @@ Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for
 In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
 
 ```
-https://github.com/stuart6854/unity-toolkit.git#v0.5.0
+https://github.com/stuart6854/unity-toolkit.git#v0.6.0
 ```
 
 You can also add it to `Packages/manifest.json`:
 
 ```json
-"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.5.0"
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.6.0"
 ```
 
-To get the latest commit on `main`, leave off `#v0.5.0`. Pinning a tag is recommended.
+To get the latest commit on `main`, leave off `#v0.6.0`. Pinning a tag is recommended.
 
 ## Project Setup
 
@@ -46,6 +46,14 @@ If your Bootstrap code normally loads the main menu, skip that when testing anot
 if (!StuMillman.Toolkit.BootstrapPlayMode.WillLoadEditedScene)
     SceneManager.LoadScene("MainMenu");
 ```
+
+### Hierarchy headers
+
+Objects named like `--- Managers ---` show as coloured bars in the Hierarchy. Each name always gets the same colour. Toggle with **Tools > Toolkit > Hierarchy Headers**. In builds, their children move up a level and the headers are removed, so they cost nothing at runtime.
+
+### Scene switcher
+
+On Unity 6.3+, a dropdown in the main toolbar lists the Build Settings scenes. If it's hidden, right-click the toolbar to show **Toolkit/Scene Switcher**. On earlier versions, use **Tools > Toolkit > Switch Scene...**.
 
 ### Screenshots
 

@@ -1,0 +1,105 @@
+using UnityEditor;
+using UnityEngine;
+
+namespace StuMillman.Toolkit.Editor.Tools
+{
+    /// <summary>
+    /// Draws GameObjects named like "--- Managers ---" as coloured header bars in the Hierarchy.
+    /// Headers are removed from builds by <see cref="HierarchyHeaderStripper"/>.
+    /// </summary>
+    [InitializeOnLoad]
+    public static class HierarchyHeaders
+    {
+        const string MenuPath = "Tools/Toolkit/Hierarchy Headers";
+        const string PrefKey = "StuMillman.Toolkit.HierarchyHeaders.Enabled";
+
+        static readonly Color[] Palette =
+        {
+            new(0.20f, 0.33f, 0.52f), // blue
+            new(0.22f, 0.45f, 0.32f), // green
+            new(0.52f, 0.30f, 0.22f), // rust
+            new(0.42f, 0.26f, 0.50f), // purple
+            new(0.18f, 0.43f, 0.47f), // teal
+            new(0.50f, 0.42f, 0.18f), // olive
+            new(0.50f, 0.22f, 0.32f), // wine
+            new(0.32f, 0.34f, 0.38f), // slate
+        };
+
+        static GUIStyle _style;
+
+        public static bool Enabled
+        {
+            get => EditorPrefs.GetBool(PrefKey, true);
+            set
+            {
+                EditorPrefs.SetBool(PrefKey, value);
+                EditorApplication.RepaintHierarchyWindow();
+            }
+        }
+
+        static HierarchyHeaders()
+        {
+            EditorApplication.hierarchyWindowItemOnGUI += OnItemGUI;
+        }
+
+        [MenuItem(MenuPath, priority = 21)]
+        static void Toggle() => Enabled = !Enabled;
+
+        [MenuItem(MenuPath, true)]
+        static bool ToggleValidate()
+        {
+            Menu.SetChecked(MenuPath, Enabled);
+            return true;
+        }
+
+        /// <summary>True for names like "--- Managers ---". Returns the title without dashes.</summary>
+        public static bool IsHeader(string name, out string title)
+        {
+            title = null;
+            if (string.IsNullOrEmpty(name) || !name.StartsWith("---"))
+                return false;
+
+            title = name.Trim('-', ' ');
+            return true;
+        }
+
+        static void OnItemGUI(int instanceId, Rect rect)
+        {
+            if (!Enabled || Event.current.type != EventType.Repaint)
+                return;
+
+            var go = EditorUtility.InstanceIDToObject(instanceId) as GameObject;
+            if (go == null || !IsHeader(go.name, out var title))
+                return;
+
+            var color = ColorFor(title);
+            if (Selection.Contains(go))
+                color = Color.Lerp(color, Color.white, 0.25f);
+            if (!go.activeInHierarchy)
+                color.a = 0.5f;
+
+            // Cover the icon and label area.
+            var bar = new Rect(rect.x - 2f, rect.y, rect.width + 2f, rect.height);
+            EditorGUI.DrawRect(bar, color);
+
+            _style ??= new GUIStyle(EditorStyles.boldLabel)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                normal = { textColor = Color.white },
+            };
+            GUI.Label(bar, title.ToUpperInvariant(), _style);
+        }
+
+        static Color ColorFor(string title)
+        {
+            // Stable FNV-1a hash so a name always gets the same colour.
+            unchecked
+            {
+                var hash = 2166136261u;
+                foreach (var c in title.ToLowerInvariant())
+                    hash = (hash ^ c) * 16777619u;
+                return Palette[hash % (uint)Palette.Length];
+            }
+        }
+    }
+}

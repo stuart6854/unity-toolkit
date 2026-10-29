@@ -3,6 +3,12 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.6.0] - 2026-10-29
+
+### Added
+- **Hierarchy headers**: objects named like `--- Managers ---` are drawn as coloured bars (colour based on the name). Toggle with Tools > Toolkit > Hierarchy Headers. In builds, header children move up a level and the header objects are removed.
+- **Scene switcher**: a main toolbar dropdown (Unity 6.3+) listing Build Settings scenes. On older versions use Tools > Toolkit > Switch Scene...
+
 ## [0.5.0] - 2026-10-29
 
 ### Added
