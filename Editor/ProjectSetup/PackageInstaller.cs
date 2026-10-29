@@ -4,15 +4,17 @@ using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace StuMillman.Toolkit.Editor.ProjectSetup
 {
     public static class PackageInstaller
     {
-        static AddAndRemoveRequest _request;
+        static ListRequest _listRequest;
+        static AddAndRemoveRequest _changeRequest;
+        static string[] _install;
+        static string[] _remove;
 
-        public static bool IsBusy => _request != null && !_request.IsCompleted;
+        public static bool IsBusy => _listRequest != null || _changeRequest != null;
 
         /// <summary>Installs and removes packages in a single Package Manager request.</summary>
         public static void Apply(IEnumerable<string> install, IEnumerable<string> remove)
@@ -23,16 +25,39 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 return;
             }
 
-            var toAdd = Clean(install)
-                .Where(id => PackageInfo.FindForPackageName(NameOf(id)) == null)
-                .ToArray();
+            _install = Clean(install).ToArray();
+            _remove = Clean(remove).Select(NameOf).ToArray();
 
-            // Never remove something we're installing, and only remove direct dependencies.
-            var addNames = new HashSet<string>(Clean(install).Select(NameOf));
-            var toRemove = Clean(remove)
-                .Select(NameOf)
+            // Ask the Package Manager for the project's direct dependencies (what's in manifest.json).
+            _listRequest = Client.List(true, false);
+            EditorApplication.update += PollList;
+        }
+
+        static void PollList()
+        {
+            if (!_listRequest.IsCompleted)
+                return;
+
+            EditorApplication.update -= PollList;
+            var list = _listRequest;
+            _listRequest = null;
+
+            if (list.Status != StatusCode.Success)
+            {
+                Debug.LogError($"[Toolkit] Could not list packages: {list.Error?.message}");
+                return;
+            }
+
+            var installed = new HashSet<string>(
+                list.Result.Where(p => p.isDirectDependency).Select(p => p.name));
+
+            var toAdd = _install.Where(id => !installed.Contains(NameOf(id))).ToArray();
+
+            // Never remove something we're installing, and only remove what the manifest lists.
+            var addNames = new HashSet<string>(_install.Select(NameOf));
+            var toRemove = _remove
                 .Where(name => !addNames.Contains(name))
-                .Where(name => PackageInfo.FindForPackageName(name) is { isDirectDependency: true })
+                .Where(installed.Contains)
                 .ToArray();
 
             if (toAdd.Length == 0 && toRemove.Length == 0)
@@ -44,8 +69,23 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             if (toAdd.Length > 0) Debug.Log($"[Toolkit] Installing: {string.Join(", ", toAdd)}");
             if (toRemove.Length > 0) Debug.Log($"[Toolkit] Removing: {string.Join(", ", toRemove)}");
 
-            _request = Client.AddAndRemove(toAdd, toRemove);
-            EditorApplication.update += Poll;
+            _changeRequest = Client.AddAndRemove(toAdd, toRemove);
+            EditorApplication.update += PollChange;
+        }
+
+        static void PollChange()
+        {
+            if (!_changeRequest.IsCompleted)
+                return;
+
+            EditorApplication.update -= PollChange;
+
+            if (_changeRequest.Status == StatusCode.Success)
+                Debug.Log("[Toolkit] Package changes applied.");
+            else
+                Debug.LogError($"[Toolkit] Package changes failed: {_changeRequest.Error?.message}");
+
+            _changeRequest = null;
         }
 
         static IEnumerable<string> Clean(IEnumerable<string> ids) =>
@@ -55,20 +95,5 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             .Distinct();
 
         static string NameOf(string id) => id.Split('@')[0];
-
-        static void Poll()
-        {
-            if (_request == null || !_request.IsCompleted)
-                return;
-
-            EditorApplication.update -= Poll;
-
-            if (_request.Status == StatusCode.Success)
-                Debug.Log("[Toolkit] Package changes applied.");
-            else
-                Debug.LogError($"[Toolkit] Package changes failed: {_request.Error?.message}");
-
-            _request = null;
-        }
     }
 }

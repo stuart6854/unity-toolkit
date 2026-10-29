@@ -3,6 +3,11 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.3.1] - 2026-10-29
+
+### Fixed
+- Package removal did nothing ("Packages already up to date"). Installed packages are now read with `Client.List` instead of `PackageInfo.FindForPackageName`.
+
 ## [0.3.0] - 2026-10-29
 
 ### Added
