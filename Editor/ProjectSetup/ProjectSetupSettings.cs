@@ -42,6 +42,21 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         [Tooltip("Package IDs to install, e.g. com.unity.cinemachine or com.unity.cinemachine@3.1.2.")]
         public List<string> packages = new();
 
+        [Tooltip("Packages and built-in modules to remove, e.g. com.unity.collab-proxy or com.unity.modules.cloth.")]
+        public List<string> packagesToRemove = new(DefaultPackagesToRemove);
+
+        static readonly string[] DefaultPackagesToRemove =
+        {
+            "com.unity.collab-proxy",
+            "com.unity.visualscripting",
+            "com.unity.multiplayer.center",
+            "com.unity.modules.cloth",
+            "com.unity.modules.vehicles",
+            "com.unity.modules.vr",
+            "com.unity.modules.wind",
+            "com.unity.modules.umbra",
+        };
+
         void OnEnable()
         {
             // A fresh instance (no saved file yet) gets the defaults.
@@ -87,6 +102,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 "com.unity.cinemachine",
                 "com.unity.ai.navigation",
             };
+            packagesToRemove = new List<string>(DefaultPackagesToRemove);
         }
 
         public void SaveSettings() => Save(true);

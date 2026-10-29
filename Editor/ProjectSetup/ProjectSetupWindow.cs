@@ -53,10 +53,11 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             Section("Packages", ref _doPackages, () =>
             {
                 Prop("packages");
+                Prop("packagesToRemove");
                 using (new EditorGUI.DisabledScope(PackageInstaller.IsBusy))
                 {
-                    if (GUILayout.Button(PackageInstaller.IsBusy ? "Installing..." : "Install Packages"))
-                        PackageInstaller.Install(settings.packages);
+                    if (GUILayout.Button(PackageInstaller.IsBusy ? "Applying..." : "Apply Package Changes"))
+                        PackageInstaller.Apply(settings.packages, settings.packagesToRemove);
                 }
             });
 
@@ -88,7 +89,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             if (_doFolders) FolderSetup.CreateFolders(settings);
             if (_doMaterials) MaterialSetup.CreateMaterials(settings);
             // Packages last: installing triggers a domain reload.
-            if (_doPackages) PackageInstaller.Install(settings.packages);
+            if (_doPackages) PackageInstaller.Apply(settings.packages, settings.packagesToRemove);
         }
 
         void Section(string title, ref bool enabled, System.Action body)
