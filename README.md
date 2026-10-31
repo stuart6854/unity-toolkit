@@ -7,16 +7,16 @@ Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for
 In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
 
 ```
-https://github.com/stuart6854/unity-toolkit.git#v0.13.0
+https://github.com/stuart6854/unity-toolkit.git#v0.14.0
 ```
 
 You can also add it to `Packages/manifest.json`:
 
 ```json
-"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.13.0"
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.14.0"
 ```
 
-To get the latest commit on `main`, leave off `#v0.13.0`. Pinning a tag is recommended.
+To get the latest commit on `main`, leave off `#v0.14.0`. Pinning a tag is recommended.
 
 ## Project Setup
 
@@ -132,6 +132,35 @@ root.Q("toast").SlideIn(new Vector2(0, 100));
 ```
 
 All helpers return a PrimeTween `Tween` (so you can `await` or chain them) and use unscaled time by default, so they work while the game is paused.
+
+### Input prompts (needs the Input System)
+
+Show the bound control for the current device, e.g. "Press (A) to jump" on Xbox or "Press [Space] to jump" on keyboard. Prompts switch when the player changes device and update when bindings change.
+
+**Set up icons (once per project):**
+
+1. **Tools > Toolkit > Input Prompts > Download Kenney Input Prompts (CC0)**, unzip it and copy the folder into `Assets`.
+2. **Tools > Toolkit > Input Prompts > Import Icons From Folder...** and pick that folder. This fills `Assets/_Project/Settings/InputPrompts/Resources/InputPromptIcons.asset` and builds a TMP sprite asset.
+3. To use your own icons, edit the entries in that asset and click **Rebuild Sprite Asset**.
+
+**TextMeshPro:** add **Input Prompt Text** to a TMP text and set its template, e.g. `Press {Jump} to jump` or `{Player/Interact} Open`.
+
+**UI Toolkit:**
+
+```xml
+<StuMillman.Toolkit.Input.InputPromptElement template="Press {Jump} to jump" icon-size="28" />
+```
+
+**Code:**
+
+```csharp
+using StuMillman.Toolkit.Input;
+
+var text = InputPrompts.FormatPlain("Press {Jump}", InputDeviceTracker.Current); // "Press [Space]"
+InputDeviceTracker.Changed += family => Debug.Log(family);
+```
+
+Actions default to the project-wide actions (**Project Settings > Input System Package**). Set `InputPrompts.Actions` or the component's field to use another asset. Controls without an icon use `[Display Name]` text.
 
 ## Releasing
 

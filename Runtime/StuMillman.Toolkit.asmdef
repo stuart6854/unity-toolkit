@@ -4,7 +4,9 @@
     "references": [
         "UniTask",
         "PrimeTween.Runtime",
-        "UnityEngine.UI"
+        "UnityEngine.UI",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -33,6 +35,11 @@
             "name": "com.unity.modules.uielements",
             "expression": "1.0.0",
             "define": "TOOLKIT_UITOOLKIT"
+        },
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "1.8.0",
+            "define": "TOOLKIT_INPUTSYSTEM"
         }
     ],
     "noEngineReferences": false

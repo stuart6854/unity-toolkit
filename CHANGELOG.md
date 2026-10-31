@@ -3,6 +3,16 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.14.0] - 2026-10-31
+
+### Added
+- **Input prompts** (needs the Input System): show bound controls in UI from templates like `Press {Jump} to jump`.
+  - `InputPromptText` component for TextMeshPro, using `<sprite>` icons with a `[Space]`-style text fallback.
+  - `InputPromptElement` for UI Toolkit (UXML or code), with inline icon elements.
+  - `InputDeviceTracker` switches prompts between keyboard/mouse, Xbox, PlayStation, Switch and generic gamepads when the player uses a different device. Prompts also update when bindings change.
+  - `InputPromptIcons` asset mapping controls to icons per device family, with a TMP sprite asset built from them.
+  - Tools > Toolkit > Input Prompts: download link and importer for the Kenney Input Prompts pack (CC0), which maps icons by file name. You can also assign your own icons.
+
 ## [0.13.0] - 2026-10-31
 
 ### Added
