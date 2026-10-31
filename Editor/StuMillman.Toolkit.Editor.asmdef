@@ -25,6 +25,11 @@
             "name": "com.unity.modules.screencapture",
             "expression": "1.0.0",
             "define": "TOOLKIT_SCREENCAPTURE"
+        },
+        {
+            "name": "com.unity.modules.imageconversion",
+            "expression": "1.0.0",
+            "define": "TOOLKIT_IMAGECONVERSION"
         }
     ],
     "noEngineReferences": false

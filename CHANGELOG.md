@@ -3,6 +3,16 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.8.0] - 2026-10-31
+
+### Added
+- **Utility Textures** setup step. Creates PNGs in `Assets/_Project/Art/Textures/Common`:
+  - Solids (2x2): `T_White`, `T_Black`, `T_Grey`, `T_FlatNormal` (imported as a normal map).
+  - Noise (256x256, seeded): `T_Noise_White`, `T_Noise_RGB`, `T_Noise_Perlin` (tileable). Linear, uncompressed, no mipmaps.
+  - Prototype (512x512): `T_Proto_Grid` (1m tile with 0.25m lines), `T_Proto_Checker`, `T_Proto_UVTest`.
+  - Gradients: `T_Gradient_Horizontal`, `T_Gradient_Vertical`, `T_Gradient_Radial`. Linear, clamped.
+- Existing textures are never overwritten.
+
 ## [0.7.0] - 2026-10-29
 
 ### Added

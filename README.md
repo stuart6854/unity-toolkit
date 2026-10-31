@@ -7,16 +7,16 @@ Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for
 In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
 
 ```
-https://github.com/stuart6854/unity-toolkit.git#v0.7.0
+https://github.com/stuart6854/unity-toolkit.git#v0.8.0
 ```
 
 You can also add it to `Packages/manifest.json`:
 
 ```json
-"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.7.0"
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.8.0"
 ```
 
-To get the latest commit on `main`, leave off `#v0.7.0`. Pinning a tag is recommended.
+To get the latest commit on `main`, leave off `#v0.8.0`. Pinning a tag is recommended.
 
 ## Project Setup
 
@@ -27,6 +27,7 @@ Open it from **Tools > Toolkit > Project Setup**. Tick the sections you want, th
 | Folders | Creates `Assets/_Project/{Art/{Materials,Models,Textures,Animations},Audio,Prefabs,Scenes,Scripts/{Runtime,Editor},ScriptableObjects,Settings,UI}`. Can add `.gitkeep` files. |
 | Git Files | Writes a Unity `.gitignore` and `.gitattributes` to the project root (LFS rules included but commented out). Existing files are kept unless "Overwrite" is ticked. |
 | Default Materials | Creates simple coloured URP Lit materials in `Assets/_Project/Art/Materials/Defaults`. Existing materials are never overwritten. |
+| Utility Textures | Creates PNGs in `Assets/_Project/Art/Textures/Common`: 2x2 solids (white, black, grey, flat normal), noise (white, RGB, tileable Perlin), prototype (1m grid, checker, UV test) and gradients (horizontal, vertical, radial), each with suitable import settings. |
 | Scenes | Creates `Bootstrap`, `MainMenu` and `Game` scenes in `Assets/_Project/Scenes` and adds them to Build Settings. Each can include a camera and light, organiser objects, a URP Global Volume and a ground plane with cubes. Opens `Bootstrap` and deletes the template's `SampleScene`. Existing scenes are never overwritten. |
 | Project Settings | Sets company/product name and bundle ID, Linear color space, fast Enter Play Mode and Input System-only input handling (asks to restart the editor). |
 | Assembly Definitions | Creates `<Product>.Runtime` and `<Product>.Editor` asmdefs in `_Project/Scripts/Runtime` and `Editor`, referencing common packages. |

@@ -13,6 +13,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         bool _doProjectSettings = true;
         bool _doAssemblies = true;
         bool _doMaterials = true;
+        bool _doTextures = true;
         bool _doScenes = true;
         bool _doPackages = true;
 
@@ -60,6 +61,19 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 Prop("materials");
                 if (GUILayout.Button("Create Materials"))
                     MaterialSetup.CreateMaterials(settings);
+            });
+
+            Section("Utility Textures", ref _doTextures, () =>
+            {
+                Prop("texturesFolder");
+                Prop("solidTextures");
+                Prop("noiseTextures");
+                Prop("noiseSize");
+                Prop("noiseSeed");
+                Prop("prototypeTextures");
+                Prop("gradientTextures");
+                if (GUILayout.Button("Create Textures"))
+                    TextureSetup.CreateTextures(settings);
             });
 
             Section("Scenes", ref _doScenes, () =>
@@ -136,6 +150,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             if (_doFolders) FolderSetup.CreateFolders(settings);
             if (_doGitFiles) GitFilesSetup.Create(settings);
             if (_doMaterials) MaterialSetup.CreateMaterials(settings);
+            if (_doTextures) TextureSetup.CreateTextures(settings);
             if (_doScenes) SceneSetup.CreateScenes(settings);
             if (_doProjectSettings) ProjectSettingsSetup.Apply(settings);
             if (_doAssemblies) AssemblySetup.Create(settings);

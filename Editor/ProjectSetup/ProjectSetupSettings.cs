@@ -57,6 +57,27 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         [Tooltip("Packages and built-in modules to remove, e.g. com.unity.collab-proxy or com.unity.modules.cloth.")]
         public List<string> packagesToRemove = new(DefaultPackagesToRemove);
 
+        [Tooltip("Folder (relative to the root folder) where utility textures are created.")]
+        public string texturesFolder = "Art/Textures/Common";
+
+        [Tooltip("2x2 white, black, grey and flat normal.")]
+        public bool solidTextures = true;
+
+        [Tooltip("White noise, RGB noise and tileable Perlin noise.")]
+        public bool noiseTextures = true;
+
+        [Tooltip("Size of the noise textures in pixels.")]
+        public int noiseSize = 256;
+
+        [Tooltip("Seed for the noise textures. Change it to get different noise.")]
+        public int noiseSeed = 12345;
+
+        [Tooltip("Tileable 1m grid, checker and UV test textures.")]
+        public bool prototypeTextures = true;
+
+        [Tooltip("Horizontal, vertical and radial gradients.")]
+        public bool gradientTextures = true;
+
         [Tooltip("Folder (relative to the root folder) where scenes are created.")]
         public string scenesFolder = "Scenes";
 
@@ -227,6 +248,13 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 "com.unity.ai.navigation",
             };
             packagesToRemove = new List<string>(DefaultPackagesToRemove);
+            texturesFolder = "Art/Textures/Common";
+            solidTextures = true;
+            noiseTextures = true;
+            noiseSize = 256;
+            noiseSeed = 12345;
+            prototypeTextures = true;
+            gradientTextures = true;
             scenesFolder = "Scenes";
             scenes = DefaultScenes();
             organiserNames = new List<string>(DefaultOrganisers);
