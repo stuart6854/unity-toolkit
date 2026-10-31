@@ -33,6 +33,7 @@ namespace StuMillman.Toolkit.Editor.Tools
             get => EditorPrefs.GetBool(PrefKey, true);
             set
             {
+                if (value == Enabled) return;
                 EditorPrefs.SetBool(PrefKey, value);
                 EditorApplication.RepaintHierarchyWindow();
 #if UNITY_6000_6_OR_NEWER

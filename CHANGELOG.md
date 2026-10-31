@@ -3,6 +3,13 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.11.0] - 2026-10-31
+
+### Added
+- **Auto-save**: saves dirty scenes and assets every N minutes (default 5), before entering Play Mode and when the editor loses focus. Untitled scenes are skipped.
+- **Play Mode tint**: sets Unity's built-in Playmode tint to a configurable colour (soft red by default).
+- **Edit > Preferences > Toolkit** page for these settings, plus toggles for Bootstrap Play Mode and hierarchy headers. Settings are per user.
+
 ## [0.10.0] - 2026-10-31
 
 ### Added

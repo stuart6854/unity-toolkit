@@ -22,6 +22,7 @@ namespace StuMillman.Toolkit.Editor.Tools
             get => EditorPrefs.GetBool(PrefKey, true);
             set
             {
+                if (value == Enabled) return;
                 EditorPrefs.SetBool(PrefKey, value);
                 UpdateStartScene();
             }

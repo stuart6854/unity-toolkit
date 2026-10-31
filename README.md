@@ -7,16 +7,16 @@ Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for
 In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
 
 ```
-https://github.com/stuart6854/unity-toolkit.git#v0.10.0
+https://github.com/stuart6854/unity-toolkit.git#v0.11.0
 ```
 
 You can also add it to `Packages/manifest.json`:
 
 ```json
-"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.10.0"
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.11.0"
 ```
 
-To get the latest commit on `main`, leave off `#v0.10.0`. Pinning a tag is recommended.
+To get the latest commit on `main`, leave off `#v0.11.0`. Pinning a tag is recommended.
 
 ## Project Setup
 
@@ -59,6 +59,13 @@ Objects named like `--- Managers ---` show as coloured bars in the Hierarchy. Ea
 ### Scene switcher
 
 On Unity 6.3+, a dropdown in the main toolbar lists the Build Settings scenes. If it's hidden, right-click the toolbar to show **Toolkit/Scene Switcher**. On earlier versions, use **Tools > Toolkit > Switch Scene...**.
+
+### Auto-save and Play Mode tint
+
+Configure both in **Edit > Preferences > Toolkit** (per user):
+
+- **Auto-save** saves dirty scenes and assets every N minutes, before entering Play Mode and when Unity loses focus. Untitled scenes are skipped.
+- **Play Mode tint** sets Unity's built-in Playmode tint colour, so it's obvious when you're playing.
 
 ### Screenshots
 
