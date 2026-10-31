@@ -51,8 +51,11 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
 
         public List<MaterialEntry> materials = new();
 
-        [Tooltip("Package IDs to install, e.g. com.unity.cinemachine or com.unity.cinemachine@3.1.2.")]
+        [Tooltip("Package IDs to install, e.g. com.unity.cinemachine, com.unity.cinemachine@3.1.2, or name=gitUrl.")]
         public List<string> packages = new();
+
+        [Tooltip("Optional packages, installed only when ticked.")]
+        public List<OptionalPackage> optionalPackages = OptionalPackage.Defaults();
 
         [Tooltip("Packages and built-in modules to remove, e.g. com.unity.collab-proxy or com.unity.modules.cloth.")]
         public List<string> packagesToRemove = new(DefaultPackagesToRemove);
@@ -251,6 +254,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 "com.unity.ai.navigation",
             };
             packagesToRemove = new List<string>(DefaultPackagesToRemove);
+            optionalPackages = OptionalPackage.Defaults();
             prototypeMaterialsFolder = "Art/Materials/Prototype";
             texturesFolder = "Art/Textures/Common";
             solidTextures = true;

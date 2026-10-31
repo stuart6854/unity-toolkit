@@ -52,7 +52,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             var installed = new HashSet<string>(
                 list.Result.Where(p => p.isDirectDependency).Select(p => p.name));
 
-            var toAdd = _install.Where(id => !installed.Contains(NameOf(id))).ToArray();
+            var toAdd = _install.Where(id => !installed.Contains(NameOf(id))).Select(SourceOf).ToArray();
 
             // Never remove something we're installing, and only remove what the manifest lists.
             var addNames = new HashSet<string>(_install.Select(NameOf));
@@ -101,6 +101,18 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             .Select(id => id.Trim())
             .Distinct();
 
-        static string NameOf(string id) => id.Split('@')[0];
+        /// <summary>"name=gitUrl" -> name; "name@1.2.3" -> name.</summary>
+        static string NameOf(string id)
+        {
+            var eq = id.IndexOf('=');
+            return eq > 0 ? id.Substring(0, eq).Trim() : id.Split('@')[0];
+        }
+
+        /// <summary>"name=gitUrl" -> gitUrl; anything else is passed through.</summary>
+        static string SourceOf(string id)
+        {
+            var eq = id.IndexOf('=');
+            return eq > 0 ? id.Substring(eq + 1).Trim() : id;
+        }
     }
 }

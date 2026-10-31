@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -120,11 +121,12 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             Section("Packages", ref _doPackages, () =>
             {
                 Prop("packages");
+                DrawOptionalPackages();
                 Prop("packagesToRemove");
                 using (new EditorGUI.DisabledScope(PackageInstaller.IsBusy))
                 {
                     if (GUILayout.Button(PackageInstaller.IsBusy ? "Applying..." : "Apply Package Changes"))
-                        PackageInstaller.Apply(settings.packages, settings.packagesToRemove);
+                        ApplyPackages(settings);
                 }
             });
 
@@ -165,9 +167,48 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             if (_doProjectSettings) ProjectSettingsSetup.Apply(settings);
             if (_doAssemblies) AssemblySetup.Create(settings);
             // Packages last: installing triggers a domain reload.
-            if (_doPackages) PackageInstaller.Apply(settings.packages, settings.packagesToRemove);
+            if (_doPackages) ApplyPackages(settings);
             // Restart prompt waits until packages finish (or shows now if nothing is running).
             ProjectSettingsSetup.PromptRestartIfPending();
+        }
+
+        static void ApplyPackages(ProjectSetupSettings settings)
+        {
+            PackageInstaller.Apply(
+                settings.packages.Concat(OptionalPackages.EnabledIds(settings)),
+                settings.packagesToRemove);
+            OptionalPackages.RemindManualImports(settings);
+        }
+
+        bool _editOptional;
+
+        void DrawOptionalPackages()
+        {
+            EditorGUILayout.LabelField("Optional Packages", EditorStyles.miniBoldLabel);
+            var list = _so.FindProperty("optionalPackages");
+
+            for (var i = 0; i < list.arraySize; i++)
+            {
+                var entry = list.GetArrayElementAtIndex(i);
+                var enabled = entry.FindPropertyRelative("enabled");
+                var name = entry.FindPropertyRelative("displayName").stringValue;
+                var description = entry.FindPropertyRelative("description").stringValue;
+                var url = entry.FindPropertyRelative("assetStoreUrl").stringValue;
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    enabled.boolValue = EditorGUILayout.ToggleLeft(name, enabled.boolValue, EditorStyles.boldLabel);
+                    if (!string.IsNullOrEmpty(url) && GUILayout.Button("Asset Store", EditorStyles.miniButton, GUILayout.Width(80)))
+                        Application.OpenURL(url);
+                }
+
+                if (!string.IsNullOrEmpty(description))
+                    EditorGUILayout.LabelField(description, EditorStyles.wordWrappedMiniLabel);
+            }
+
+            _editOptional = EditorGUILayout.Foldout(_editOptional, "Edit optional package list", true);
+            if (_editOptional)
+                EditorGUILayout.PropertyField(list, true);
         }
 
         void Section(string title, ref bool enabled, System.Action body)

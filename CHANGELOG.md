@@ -3,6 +3,14 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.10.0] - 2026-10-31
+
+### Added
+- **Optional packages** in the Packages section, installed only when ticked:
+  - **Alchemy** (open-source inspector attributes), installed from GitHub.
+  - **ALINE** (paid, Asset Store): installs its dependencies (Burst, Mathematics, Collections) and reminds you to import ALINE from My Assets, with a button for its Asset Store page.
+- The optional list can be edited, and package entries support `name=gitUrl` so git packages aren't reinstalled every run.
+
 ## [0.9.0] - 2026-10-31
 
 ### Added
