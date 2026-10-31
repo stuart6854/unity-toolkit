@@ -7,16 +7,16 @@ Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for
 In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
 
 ```
-https://github.com/stuart6854/unity-toolkit.git#v0.8.0
+https://github.com/stuart6854/unity-toolkit.git#v0.9.0
 ```
 
 You can also add it to `Packages/manifest.json`:
 
 ```json
-"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.8.0"
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.9.0"
 ```
 
-To get the latest commit on `main`, leave off `#v0.8.0`. Pinning a tag is recommended.
+To get the latest commit on `main`, leave off `#v0.9.0`. Pinning a tag is recommended.
 
 ## Project Setup
 
@@ -47,6 +47,10 @@ If your Bootstrap code normally loads the main menu, skip that when testing anot
 if (!StuMillman.Toolkit.BootstrapPlayMode.WillLoadEditedScene)
     SceneManager.LoadScene("MainMenu");
 ```
+
+### Prototype materials
+
+**Tools > Toolkit > Prototype Materials** creates materials using the package's world-space triplanar shader. The grid stays 1 tile = `Tile Size` metres however objects are scaled or rotated. Pick a preset colour (Floor, Wall, Interactive, Water, Vegetation, Danger, Special), a pattern (Grid, Checker, Plain) and click **Create Material**. **Create Default Set** makes one grid material per preset. Lighting is simple: main light with shadows, ambient and fog (no additional lights).
 
 ### Hierarchy headers
 

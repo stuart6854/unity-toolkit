@@ -57,6 +57,9 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         [Tooltip("Packages and built-in modules to remove, e.g. com.unity.collab-proxy or com.unity.modules.cloth.")]
         public List<string> packagesToRemove = new(DefaultPackagesToRemove);
 
+        [Tooltip("Folder (relative to the root folder) where prototype materials are created.")]
+        public string prototypeMaterialsFolder = "Art/Materials/Prototype";
+
         [Tooltip("Folder (relative to the root folder) where utility textures are created.")]
         public string texturesFolder = "Art/Textures/Common";
 
@@ -248,6 +251,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 "com.unity.ai.navigation",
             };
             packagesToRemove = new List<string>(DefaultPackagesToRemove);
+            prototypeMaterialsFolder = "Art/Materials/Prototype";
             texturesFolder = "Art/Textures/Common";
             solidTextures = true;
             noiseTextures = true;

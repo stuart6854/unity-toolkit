@@ -3,6 +3,13 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.9.0] - 2026-10-31
+
+### Added
+- **Prototype Triplanar** URP shader (`StuMillman/Toolkit/Prototype Triplanar`): world-space, procedural grid / checker / plain patterns that keep their size however objects are scaled. Main light with shadows, ambient and fog.
+- **Prototype Materials** window (Tools > Toolkit > Prototype Materials): pick a preset colour, pattern, tile size, line width and smoothness, then create the material.
+- Default blockout set: `M_Proto_Floor`, `Wall`, `Interactive`, `Water`, `Vegetation`, `Danger`, `Special` in `Assets/_Project/Art/Materials/Prototype`. Created by the Materials setup step or the window's "Create Default Set" button.
+
 ## [0.8.0] - 2026-10-31
 
 ### Added

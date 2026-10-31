@@ -59,8 +59,14 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             {
                 Prop("materialsFolder");
                 Prop("materials");
+                Prop("prototypeMaterialsFolder");
                 if (GUILayout.Button("Create Materials"))
+                {
                     MaterialSetup.CreateMaterials(settings);
+                    Prototype.PrototypeMaterialWindow.CreateDefaultSet();
+                }
+                if (GUILayout.Button("Open Prototype Material Generator"))
+                    Prototype.PrototypeMaterialWindow.Open();
             });
 
             Section("Utility Textures", ref _doTextures, () =>
@@ -149,7 +155,11 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         {
             if (_doFolders) FolderSetup.CreateFolders(settings);
             if (_doGitFiles) GitFilesSetup.Create(settings);
-            if (_doMaterials) MaterialSetup.CreateMaterials(settings);
+            if (_doMaterials)
+            {
+                MaterialSetup.CreateMaterials(settings);
+                Prototype.PrototypeMaterialWindow.CreateDefaultSet();
+            }
             if (_doTextures) TextureSetup.CreateTextures(settings);
             if (_doScenes) SceneSetup.CreateScenes(settings);
             if (_doProjectSettings) ProjectSettingsSetup.Apply(settings);
