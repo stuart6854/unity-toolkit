@@ -84,6 +84,15 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
         [Tooltip("Horizontal, vertical and radial gradients.")]
         public bool gradientTextures = true;
 
+        [Tooltip("Soft circle, glow, spark, smoke and ring textures (white with alpha) for particles.")]
+        public bool particleTextures = true;
+
+        [Tooltip("Folder (relative to the root folder) for particle materials.")]
+        public string particleMaterialsFolder = "Art/Materials/Particles";
+
+        [Tooltip("Folder (relative to the root folder) for VFX Library prefabs.")]
+        public string vfxFolder = "Prefabs/VFX";
+
         [Tooltip("Folder (relative to the root folder) where scenes are created.")]
         public string scenesFolder = "Scenes";
 
@@ -272,6 +281,9 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             noiseSeed = 12345;
             prototypeTextures = true;
             gradientTextures = true;
+            particleTextures = true;
+            particleMaterialsFolder = "Art/Materials/Particles";
+            vfxFolder = "Prefabs/VFX";
             scenesFolder = "Scenes";
             scenes = DefaultScenes();
             organiserNames = new List<string>(DefaultOrganisers);

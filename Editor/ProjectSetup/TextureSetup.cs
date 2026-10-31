@@ -19,17 +19,32 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             public Action<TextureImporter> Import;
         }
 
+        public static string Folder(ProjectSetupSettings settings) =>
+            $"Assets/{settings.rootFolder}/{settings.texturesFolder}".Replace('\\', '/');
+
         public static void CreateTextures(ProjectSetupSettings settings)
         {
-#if TOOLKIT_IMAGECONVERSION
-            var folder = $"Assets/{settings.rootFolder}/{settings.texturesFolder}".Replace('\\', '/');
-            Directory.CreateDirectory(folder);
-
             var specs = new List<Spec>();
             if (settings.solidTextures) AddSolids(specs);
             if (settings.noiseTextures) AddNoise(specs, settings.noiseSize, settings.noiseSeed);
             if (settings.prototypeTextures) AddPrototype(specs);
             if (settings.gradientTextures) AddGradients(specs);
+            if (settings.particleTextures) AddParticles(specs, settings.noiseSeed);
+            Generate(Folder(settings), specs);
+        }
+
+        /// <summary>Creates only the particle textures (used by the VFX Library).</summary>
+        public static void CreateParticleTextures(ProjectSetupSettings settings)
+        {
+            var specs = new List<Spec>();
+            AddParticles(specs, settings.noiseSeed);
+            Generate(Folder(settings), specs);
+        }
+
+        static void Generate(string folder, List<Spec> specs)
+        {
+#if TOOLKIT_IMAGECONVERSION
+            Directory.CreateDirectory(folder);
 
             var created = new List<(string path, Spec spec)>();
             foreach (var spec in specs)
@@ -296,6 +311,97 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             i.filterMode = FilterMode.Bilinear;
             i.wrapMode = TextureWrapMode.Clamp;
             i.textureCompression = TextureImporterCompression.Uncompressed;
+        }
+
+        // ---------- Particles ----------
+
+        public const string SoftCircle = "T_Particle_SoftCircle";
+        public const string Glow = "T_Particle_Glow";
+        public const string Spark = "T_Particle_Spark";
+        public const string Smoke = "T_Particle_Smoke";
+        public const string Ring = "T_Particle_Ring";
+
+        static void AddParticles(List<Spec> specs, int seed)
+        {
+            const int size = 128;
+
+            // Alpha only; colour comes from the particle system.
+            Color32 White(float alpha) => new(255, 255, 255, (byte)Mathf.RoundToInt(Mathf.Clamp01(alpha) * 255f));
+            float Dist(int x, int y) => Vector2.Distance(new Vector2(x + 0.5f, y + 0.5f), new Vector2(size / 2f, size / 2f)) / (size / 2f);
+
+            specs.Add(new Spec
+            {
+                Name = SoftCircle,
+                Make = () => Fill(size, size, (x, y) => White(Mathf.SmoothStep(1f, 0f, Dist(x, y)))),
+                Import = ParticleImport,
+            });
+
+            specs.Add(new Spec
+            {
+                Name = Glow,
+                Make = () => Fill(size, size, (x, y) =>
+                {
+                    var d = Mathf.Clamp01(Dist(x, y));
+                    return White(Mathf.Pow(1f - d, 3f));
+                }),
+                Import = ParticleImport,
+            });
+
+            specs.Add(new Spec
+            {
+                Name = Spark,
+                Make = () => Fill(size, size / 4, (x, y) =>
+                {
+                    // Horizontal streak: bright core, soft edges, tapering towards both ends.
+                    var u = (x + 0.5f) / size * 2f - 1f;
+                    var v = (y + 0.5f) / (size / 4f) * 2f - 1f;
+                    var along = 1f - u * u;
+                    var across = Mathf.Exp(-v * v * 6f);
+                    return White(along * across);
+                }),
+                Import = ParticleImport,
+            });
+
+            specs.Add(new Spec
+            {
+                Name = Smoke,
+                Make = () =>
+                {
+                    var noise = PerlinTexture(size, seed + 7);
+                    var px = noise.GetPixels32();
+                    UnityEngine.Object.DestroyImmediate(noise);
+                    var i = 0;
+                    return Fill(size, size, (x, y) =>
+                    {
+                        var n = px[i++].r / 255f;
+                        var falloff = Mathf.SmoothStep(1f, 0f, Dist(x, y));
+                        return White(falloff * Mathf.Lerp(0.35f, 1f, n));
+                    });
+                },
+                Import = ParticleImport,
+            });
+
+            specs.Add(new Spec
+            {
+                Name = Ring,
+                Make = () => Fill(size, size, (x, y) =>
+                {
+                    var d = Dist(x, y);
+                    return White(Mathf.Exp(-Mathf.Pow((d - 0.8f) / 0.08f, 2f)));
+                }),
+                Import = ParticleImport,
+            });
+        }
+
+        static void ParticleImport(TextureImporter i)
+        {
+            i.textureType = TextureImporterType.Default;
+            i.sRGBTexture = true;
+            i.alphaSource = TextureImporterAlphaSource.FromInput;
+            i.alphaIsTransparency = true;
+            i.mipmapEnabled = true;
+            i.wrapMode = TextureWrapMode.Clamp;
+            i.filterMode = FilterMode.Bilinear;
         }
 
         // ---------- Helpers ----------

@@ -3,6 +3,17 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.15.0] - 2026-10-31
+
+### Added
+- **Particle textures** (Utility Textures step): `T_Particle_SoftCircle`, `Glow`, `Spark`, `Smoke`, `Ring`. White with alpha, so colour comes from the particle system.
+- **Particle materials** (URP Particles/Unlit): `M_Particle_Glow`, `Spark`, `Ring` (additive), `SoftAlpha` and `Smoke` (alpha, soft particles).
+- **VFX Library** window (Tools > Toolkit > VFX Library): creates starter prefabs, with optional tint.
+  - Combat: HitSparks, MuzzleFlash, Explosion.
+  - Environment: DustPuff, FootstepDust, SmokeColumn, Fire.
+  - Pickups & Magic: PickupSparkle, MagicTrail, HealBurst, LevelUpRing.
+- **Particle Preview** Scene view overlay: loop one-shot effects, Restart, Play/Pause, simulation speed, and live particle/system/duration stats.
+
 ## [0.14.0] - 2026-10-31
 
 ### Added

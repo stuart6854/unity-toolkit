@@ -66,8 +66,11 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                     MaterialSetup.CreateMaterials(settings);
                     Prototype.PrototypeMaterialWindow.CreateDefaultSet();
                 }
+                Prop("particleMaterialsFolder");
                 if (GUILayout.Button("Open Prototype Material Generator"))
                     Prototype.PrototypeMaterialWindow.Open();
+                if (GUILayout.Button("Open VFX Library"))
+                    VFX.VfxLibraryWindow.Open();
             });
 
             Section("Utility Textures", ref _doTextures, () =>
@@ -79,6 +82,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 Prop("noiseSeed");
                 Prop("prototypeTextures");
                 Prop("gradientTextures");
+                Prop("particleTextures");
                 if (GUILayout.Button("Create Textures"))
                     TextureSetup.CreateTextures(settings);
             });

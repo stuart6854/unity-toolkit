@@ -7,16 +7,16 @@ Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for
 In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
 
 ```
-https://github.com/stuart6854/unity-toolkit.git#v0.14.0
+https://github.com/stuart6854/unity-toolkit.git#v0.15.0
 ```
 
 You can also add it to `Packages/manifest.json`:
 
 ```json
-"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.14.0"
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.15.0"
 ```
 
-To get the latest commit on `main`, leave off `#v0.14.0`. Pinning a tag is recommended.
+To get the latest commit on `main`, leave off `#v0.15.0`. Pinning a tag is recommended.
 
 ## Project Setup
 
@@ -51,6 +51,20 @@ if (!StuMillman.Toolkit.BootstrapPlayMode.WillLoadEditedScene)
 ### Prototype materials
 
 **Tools > Toolkit > Prototype Materials** creates materials using the package's world-space triplanar shader. The grid stays 1 tile = `Tile Size` metres however objects are scaled or rotated. Pick a preset colour (Floor, Wall, Interactive, Water, Vegetation, Danger, Special), a pattern (Grid, Checker, Plain) and click **Create Material**. **Create Default Set** makes one grid material per preset. Lighting is simple: main light with shadows, ambient and fog (no additional lights).
+
+### VFX Library and particle preview
+
+**Tools > Toolkit > VFX Library** creates starter particle prefabs in `Assets/_Project/Prefabs/VFX`:
+
+| Category | Effects |
+|---|---|
+| Combat | HitSparks, MuzzleFlash, Explosion |
+| Environment | DustPuff, FootstepDust, SmokeColumn, Fire |
+| Pickups & Magic | PickupSparkle, MagicTrail, HealBurst, LevelUpRing |
+
+Tick the ones you want, optionally pick a tint (e.g. blue sparks), and click **Create**. They use the toolkit's particle textures and URP particle materials, which are created if missing. Hit and muzzle effects point along +Z, so align them to the hit normal. The smoke material uses soft particles, which need **Depth Texture** turned on in your URP asset.
+
+When you select a particle effect, the **Particle Preview** overlay appears in the Scene view. It can loop one-shot effects, restart, play/pause, change the simulation speed and show live stats.
 
 ### Hierarchy headers
 
