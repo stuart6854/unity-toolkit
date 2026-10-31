@@ -49,7 +49,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                     FolderSetup.CreateFolders(settings);
             });
 
-            Section("Git Files (.gitignore / .gitattributes)", ref _doGitFiles, () =>
+            Section("Git Files (.gitignore / .gitattributes / .editorconfig)", ref _doGitFiles, () =>
             {
                 Prop("overwriteGitFiles");
                 if (GUILayout.Button("Create Git Files"))

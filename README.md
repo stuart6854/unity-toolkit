@@ -7,16 +7,16 @@ Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for
 In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
 
 ```
-https://github.com/stuart6854/unity-toolkit.git#v0.12.0
+https://github.com/stuart6854/unity-toolkit.git#v0.13.0
 ```
 
 You can also add it to `Packages/manifest.json`:
 
 ```json
-"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.12.0"
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.13.0"
 ```
 
-To get the latest commit on `main`, leave off `#v0.12.0`. Pinning a tag is recommended.
+To get the latest commit on `main`, leave off `#v0.13.0`. Pinning a tag is recommended.
 
 ## Project Setup
 
@@ -87,6 +87,51 @@ Debug.Log(info.ToString());             // "v0.3.0 (42) a1b2c3d [main] 2026-10-2
 - The build number goes up by 1 on each build. It's saved in `ProjectSettings/StuMillmanToolkit/BuildNumber.txt` (commit this file), and is also used for the Android version code and iOS/macOS build number.
 - In the editor, `Current` returns live values (the last build number, current git state).
 - Needs `git` on the PATH for commit/branch. Without it they show as `unknown`.
+
+## Runtime
+
+### `[ResetOnPlay]`
+
+With fast Enter Play Mode (no domain reload), static fields keep their values between plays. Mark them to restore their initial value each time you press Play:
+
+```csharp
+using StuMillman.Toolkit;
+
+public static class Score
+{
+    [ResetOnPlay] public static int Current;
+    [ResetOnPlay] static readonly List<string> Log = new();   // readonly collections are cleared and refilled
+}
+```
+
+### Scene loader (needs UniTask)
+
+```csharp
+using StuMillman.Toolkit.Scenes;
+
+await SceneLoader.Load("Game");                          // fade out, load, fade in
+await SceneLoader.Load("Game", loadingScene: "Loading"); // via a loading scene
+SceneLoader.FadeDuration = 0.5f;                          // also FadeColor, DefaultLoadingScene, MinLoadingSceneTime
+// In your loading scene UI: progressBar.value = SceneLoader.Progress;
+```
+
+Scenes must be in Build Settings. The fade overlay needs UGUI (`com.unity.ugui`); without it, scenes still load with no fade.
+
+### UI helpers (needs PrimeTween)
+
+```csharp
+using StuMillman.Toolkit.UI;
+
+panel.FadeIn();                                   // CanvasGroup
+menuRect.SlideIn(new Vector2(0, -200));           // RectTransform, from below
+popup.transform.PopIn();
+errorText.rectTransform.Shake();
+
+root.Q("settings").FadeIn();                      // UI Toolkit VisualElement
+root.Q("toast").SlideIn(new Vector2(0, 100));
+```
+
+All helpers return a PrimeTween `Tween` (so you can `await` or chain them) and use unscaled time by default, so they work while the game is paused.
 
 ## Releasing
 

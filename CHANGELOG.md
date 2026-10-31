@@ -3,6 +3,14 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.13.0] - 2026-10-31
+
+### Added
+- **`[ResetOnPlay]`** for static fields: restores the initial value before each Play (for fast Enter Play Mode without domain reload).
+- **`.editorconfig`** in the Git Files step: 4-space indent, Allman braces, `_camelCase` private fields, PascalCase types/members/constants, `I`/`T` prefixes.
+- **`SceneLoader`** (needs UniTask): `await SceneLoader.Load("Game", loadingScene: "Loading")` with fade out/in, an optional loading scene, `Progress`, and start/complete events. Uses a persistent `ScreenFader` overlay (needs UGUI).
+- **UI tween helpers** (needs PrimeTween): `FadeIn/FadeOut`, `SlideIn/SlideOut`, `PopIn/PopOut`, `Shake` for UGUI (`CanvasGroup`, `RectTransform`, `Transform`) and UI Toolkit (`VisualElement`). Unscaled time by default.
+
 ## [0.12.0] - 2026-10-31
 
 ### Added

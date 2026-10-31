@@ -1,7 +1,11 @@
 {
     "name": "StuMillman.Toolkit",
     "rootNamespace": "StuMillman.Toolkit",
-    "references": [],
+    "references": [
+        "UniTask",
+        "PrimeTween.Runtime",
+        "UnityEngine.UI"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -9,6 +13,27 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.cysharp.unitask",
+            "expression": "1.0.0",
+            "define": "TOOLKIT_UNITASK"
+        },
+        {
+            "name": "com.kyrylokuzyk.primetween",
+            "expression": "1.0.0",
+            "define": "TOOLKIT_PRIMETWEEN"
+        },
+        {
+            "name": "com.unity.ugui",
+            "expression": "1.0.0",
+            "define": "TOOLKIT_UGUI"
+        },
+        {
+            "name": "com.unity.modules.uielements",
+            "expression": "1.0.0",
+            "define": "TOOLKIT_UITOOLKIT"
+        }
+    ],
     "noEngineReferences": false
 }
