@@ -174,6 +174,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
 
         static void ApplyPackages(ProjectSetupSettings settings)
         {
+            OptionalPackages.EnsureRegistries(settings);
             PackageInstaller.Apply(
                 settings.packages.Concat(OptionalPackages.EnabledIds(settings)),
                 settings.packagesToRemove);

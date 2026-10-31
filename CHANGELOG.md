@@ -3,6 +3,13 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.12.0] - 2026-10-31
+
+### Added
+- Optional packages: **UniTask** (from GitHub) and **PrimeTween** (from npm).
+- Optional packages can declare a scoped registry. It's added to `Packages/manifest.json` automatically (or the scope is added to an existing registry with the same URL).
+- Saved settings from older versions get the new optional packages added.
+
 ## [0.11.0] - 2026-10-31
 
 ### Added

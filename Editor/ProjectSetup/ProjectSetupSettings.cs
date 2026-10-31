@@ -174,7 +174,7 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
             "com.unity.modules.tetgen",
         };
 
-        const int CurrentSettingsVersion = 3;
+        const int CurrentSettingsVersion = 4;
 
         [SerializeField, HideInInspector] int settingsVersion;
 
@@ -202,6 +202,15 @@ namespace StuMillman.Toolkit.Editor.ProjectSetup
                 packagesToRemove.Remove("com.unity.modules.screencapture");
                 if (string.IsNullOrEmpty(companyName)) companyName = PlayerSettings.companyName;
                 if (string.IsNullOrEmpty(productName)) productName = PlayerSettings.productName;
+            }
+
+            if (settingsVersion < 4)
+            {
+                // Add new default optional packages (UniTask, PrimeTween), keeping the user's entries.
+                optionalPackages ??= new List<OptionalPackage>();
+                foreach (var entry in OptionalPackage.Defaults())
+                    if (!optionalPackages.Exists(p => p.displayName == entry.displayName))
+                        optionalPackages.Add(entry);
             }
 
             settingsVersion = CurrentSettingsVersion;
