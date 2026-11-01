@@ -3,6 +3,11 @@
 All notable changes to this package are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.15.1] - 2026-11-01
+
+### Fixed
+- Particle Preview no longer tries to play prefab assets selected in the Project window ("Instantiate Particle System Prefabs before trying to play/simulate them"). It only controls effects in a scene or in Prefab Mode.
+
 ## [0.15.0] - 2026-10-31
 
 ### Added

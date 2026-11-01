@@ -7,16 +7,16 @@ Personal toolkit for **Unity 6+**. It starts with a **Project Setup** window for
 In Unity, open **Window > Package Manager**, click **+ > Install package from git URL...**, then enter:
 
 ```
-https://github.com/stuart6854/unity-toolkit.git#v0.15.0
+https://github.com/stuart6854/unity-toolkit.git#v0.15.1
 ```
 
 You can also add it to `Packages/manifest.json`:
 
 ```json
-"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.15.0"
+"com.stumillman.toolkit": "https://github.com/stuart6854/unity-toolkit.git#v0.15.1"
 ```
 
-To get the latest commit on `main`, leave off `#v0.15.0`. Pinning a tag is recommended.
+To get the latest commit on `main`, leave off `#v0.15.1`. Pinning a tag is recommended.
 
 ## Project Setup
 

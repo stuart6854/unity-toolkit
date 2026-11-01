@@ -33,7 +33,8 @@ namespace StuMillman.Toolkit.Editor.VFX
             get
             {
                 var go = Selection.activeGameObject;
-                if (go == null) return null;
+                // Only effects in a scene (or Prefab Mode). Prefab assets in the Project window can't be simulated.
+                if (go == null || EditorUtility.IsPersistent(go) || !go.scene.IsValid()) return null;
                 var ps = go.GetComponentInParent<ParticleSystem>();
                 if (ps == null) return go.GetComponentInChildren<ParticleSystem>();
                 // Walk up to the top-most particle system so the whole effect is controlled.
@@ -93,9 +94,13 @@ namespace StuMillman.Toolkit.Editor.VFX
 
         void Tick()
         {
-            if (!displayed) return;
             var ps = Root;
-            if (ps == null) return;
+            if (ps == null)
+            {
+                if (displayed) displayed = false;
+                return;
+            }
+            if (!displayed) return;
 
             if (_stats != null)
             {
